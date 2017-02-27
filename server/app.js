@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var bodyParser = require( 'body-parser' );
 var path = require('path');
 var port = 3000;
 
@@ -25,8 +26,24 @@ var jokes = [
 
 // static file requests
 app.use(express.static('server/public'));
-
+app.use( bodyParser.urlencoded( { extended: true } ) );
 // routes
+
+app.get('/jokes', function(req, res){
+  res.send(jokes);
+  console.log(jokes);
+});
+
+app.post('/new/joke', function(req, res){
+var newJoke = req.body;
+console.log("this is newJoke",req.body);
+  jokes.push(newJoke);
+  console.log("should be final list of jokes",jokes);
+    res.send(jokes);
+});
+
+
+
 
 
 // Send index.html file
@@ -36,5 +53,5 @@ app.get('/', function(req, res) {
 
 // Start the server!
 app.listen(port, function() {
-  console.log("Node listening on port " + port);
+
 });
